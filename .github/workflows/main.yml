@@ -2,7 +2,7 @@ name: CI/CD for Pyapp
 
 on:
   push:
-    branches: ["test"]
+    branches: ["dev"]
   workflow_dispatch:
 
 jobs:

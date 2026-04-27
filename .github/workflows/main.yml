@@ -2,17 +2,20 @@ name: CI/CD for Pyapp
 
 on:
   push:
-    branch: ["main"]
+    branches: ["test"]
   workflow_dispatch:
 
 jobs:
   run-simulation:
     runs-on: [self-hosted, python-app-runner]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-  steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Create Production Env File
+        run: |
+          echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
 
-     name: Building compose
-     run:
-       docker compose -d --build
+      - name: Building compose
+        run: |
+          ENV_FILE=.env.prod docker compose up -d --build

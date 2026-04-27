@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-simulation:
-    runs-on: [self-hosted, pyapp-runner]
+    runs-on: [self-hosted, python-app-runner]
 
   steps:
     - name: Checkout Repository

@@ -14,11 +14,12 @@ jobs:
 
       - name: Building compose
         run: |
-
+          # 1. Determine value
           if [ "${{ github.ref_name }}" == "main" ]; then
-            export GIT_BRANCH="${{ vars.ENV_PROD_BRANCH }}"
+            BRANCH_VAL="${{ vars.ENV_PROD_BRANCH }}"
           else
-            export GIT_BRANCH="${{ vars.ENV_DEV_BRANCH }}"
+            BRANCH_VAL="${{ vars.ENV_DEV_BRANCH }}"
           fi
 
-          docker compose up -d --build
+          GIT_BRANCH=$BRANCH_VAL docker compose up -d --build
+

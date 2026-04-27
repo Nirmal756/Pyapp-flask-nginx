@@ -14,8 +14,13 @@ jobs:
 
       - name: Create Production Env File
         run: |
-          echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
-
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
+            echo "TARGET_ENV=.env.prod" >> $GITHUB_ENV
+          else
+            echo "${{ secrets.ENV_DEV_CONTENT }}" > .env.dev
+            echo "TARGET_ENV=.env.dev" >> $GITHUB_ENV
+          fi
       - name: Building compose
         run: |
           ENV_FILE=.env.prod docker compose up -d --build

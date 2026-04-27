@@ -23,4 +23,4 @@ jobs:
           fi
       - name: Building compose
         run: |
-          ENV_FILE=.env.prod docker compose up -d --build
+          ENV_FILE=${{ env.TARGET_ENV }} docker compose up -d --build

@@ -1,6 +1,8 @@
 services:
   flask_app:
     build: .
+    env_file:
+      - ${ENV_FILE}
     environment:
       - GIT_BRANCH=${GIT_BRANCH}
     restart: always

@@ -36,4 +36,5 @@ jobs:
 
       - name: Building compose
         run: |
+          export $(cat .env | xargs)
           docker compose up -d --build

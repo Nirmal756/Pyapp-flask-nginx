@@ -21,8 +21,18 @@ jobs:
           else
               echo "No branch"    
           fi
+
+          export $(cat .env | xargs)
       - name: Show
         run: cat .env
+
+      - name: Compose down
+        run: |
+          docker compose down
+
+      - name: Docker prune
+        run: |
+          docker system prune -a
 
       - name: Building compose
         run: |

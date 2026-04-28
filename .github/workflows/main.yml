@@ -15,11 +15,15 @@ jobs:
       - name: Create .env
         run: |
           if [ "${GITHUB_REF_NAME}" = "dev" ]; then
-              echo "${{ secrets.DEV_ENV }}" > .env
+              # Use a default if the secret is empty for some reason
+              echo "${{ secrets.DEV_ENV }}" | tr -d '\r' > .env
           elif [ "${GITHUB_REF_NAME}" = "main" ]; then
-              echo "${{ secrets.PROD_ENV }}" > .env
-          else
-              echo "No branch"    
+              echo "${{ secrets.PROD_ENV }}" | tr -d '\r' > .env
+          fi
+
+          if [ ! -s .env ]; then
+            echo "ERROR: .env file is empty! Check your GitHub Secrets."
+            exit 1
           fi
 
           export $(cat .env | xargs)

@@ -5,9 +5,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Fetching the variable from .env via Docker environment
-    branch = os.getenv('GIT_BRANCH', 'unknown')
-    return render_template('index.html', branch=branch)
+    # Get the variable, but provide a clear error message if it's missing
+    branch = os.getenv('GIT_BRANCH', 'Variable Not Found')
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    # Debug print: This will show up in 'docker logs <container_id>'
+    print(f"DEBUG: Current branch variable is: {branch}")
+
+    return render_template('index.html', branch=branch)

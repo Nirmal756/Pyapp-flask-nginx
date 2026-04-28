@@ -11,17 +11,18 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+      
+      - name: Create .env
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "dev" ]; then
+              echo "${{ secrets.DEV_ENV }}" > .env
+          else
+              echo "${{ secrets.PROD_ENV }}" > .env
+          fi
+
+      - name: Show
+        run: cat .env
 
       - name: Building compose
         run: |
-          if [ "${{ github.ref_name }}" == "main" ]; then
-            echo "GIT_BRANCH=${{ vars.ENV_PROD_BRANCH }}" > .env.prod
-            export GIT_BRANCH="${{ vars.ENV_PROD_BRANCH }}"
-            export ENV_FILE=".env.prod"
-          else
-            echo "GIT_BRANCH=${{ vars.ENV_DEV_BRANCH }}" > .env.dev
-            export GIT_BRANCH="${{ vars.ENV_DEV_BRANCH }}"
-            export ENV_FILE=".env.dev"
-          fi
-
-          docker compose up -d --build
+          docker compose -d --build
